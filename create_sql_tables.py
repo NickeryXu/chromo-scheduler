@@ -1,6 +1,6 @@
 import sqlite3
 
-db_name = 'scheduler.db'
+from consts import *
 
 def create_sql_tables(db_name):
     try:

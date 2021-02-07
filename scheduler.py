@@ -20,10 +20,7 @@ dest_path = '/media/cs'
 tmp_path = './tmp'
 
 SRC_EXT = 'mmi' # must consider case
-DEST_EXT = 'tiff'
-
-# sqlite3
-db_name = 'scheduler.db'
+DEST_EXT = 'JPG'
 
 # ai core
 handler = CoreHandler(use_core)

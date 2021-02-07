@@ -5,3 +5,6 @@ STATUS = {
     'SORTING': 3,
     'FINISHED': 4
 }
+
+# sqlite3
+db_name = 'scheduler.db'
