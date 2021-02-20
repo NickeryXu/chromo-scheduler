@@ -68,6 +68,24 @@ def getCaseStatus(db_name, case_name):
         if conn:
             conn.close()
 
+def getCasesByStatus(db_name, status):
+    try:
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        cursor = conn.cursor()
+    
+        cursor.execute('select * from cases where status=?', (status,))
+        cases = cursor.fetchall()
+
+        cursor.close()
+
+        return cases
+    except sqlite3.Error as error:
+        print('getCaseStatus sqlite3 error, {}'.format(error))
+        return None
+    finally:
+        if conn:
+            conn.close()
+
 def updateCaseStatus(db_name, case_name, status):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
@@ -151,6 +169,32 @@ def createNewScore(db_name, case_name, sample_id, score):
             score
         )
         cursor.execute('''insert into scores values (NULL, ?, ?, ?, datetime('now', 'localtime'))''', insert_tuple)
+        conn.commit()
+
+        cursor.close()
+
+        return True
+    except sqlite3.Error as error:
+        print('createNewScore sqlite3 error, {}'.format(error))
+        return False
+    finally:
+        if conn:
+            conn.close()
+
+def updateScore(db_name, case_name, sample_id, score):
+    try:
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        cursor = conn.cursor()
+    
+        update_tuple = (
+            score,
+            case_name,
+            sample_id
+        )
+        cursor.execute(
+            '''update scores set score = ? where case_name = ? and sample_id = ?''',
+            update_tuple
+        )
         conn.commit()
 
         cursor.close()
