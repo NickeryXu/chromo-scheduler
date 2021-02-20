@@ -1,4 +1,4 @@
-use_core = 'resnet50'
+activate_core_name = 'resnet50'
 
 CORE_ARGS = {
     'resnet50': {
@@ -7,5 +7,6 @@ CORE_ARGS = {
         'MODEL_TYPE': 'ori_resnet50',
         'NUM_CLASSES': 2,
         'PREPROCESS': 'autolevel',
+        'BATCH_SIZE': 8
     }
 }

@@ -27,7 +27,7 @@ class CoreHandler():
         else: # init focal model or classify model
             self.core = getattr(Core, 'ClassifyCore')(arg['MODEL_PATH'], model_type=arg['MODEL_TYPE'],
                                         preprocess=arg['PREPROCESS'], device_name=arg['DEVICE_NAME'],
-                                        num_classes=arg['NUM_CLASSES'])
+                                        num_classes=arg['NUM_CLASSES'], batch_size=arg['BATCH_SIZE'])
             
     def get_score(self, imageArr):
         """get score from imageArr
@@ -69,6 +69,12 @@ class CoreHandler():
             score = nn.functional.softmax(torch.Tensor(result), dim=-1)[1].item()
 
             return score
+
+    def get_all_scores(self, img_paths):
+        results = self.core.classify_batch(img_paths)
+        scores = nn.functional.softmax(results, dim=-1)[:, 1].tolist()
+
+        return scores
         
     def _check_arg(self, arg):
         """check the core arg and log the arg
