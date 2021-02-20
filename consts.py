@@ -11,6 +11,9 @@ STATUS = {
 # sqlite3
 db_name = 'scheduler.db'
 
+# lister
+LIST_CHECK_INTERVAL = 30 # sec
+
 # worker
 WORKER_CHECK_INTERVAL = 10 # sec
 
