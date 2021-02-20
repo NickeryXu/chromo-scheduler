@@ -35,18 +35,19 @@ def move_case(case_name, dest_path, export_path):
         print('move_case error: {}'.format(err))
 
 if __name__ == '__main__':
-    tik = time.time()
+    while True:
+        tik = time.time()
 
-    # check moving cases
-    cases = getCasesByStatus(db_name, STATUS['MOVING'])
+        # check moving cases
+        cases = getCasesByStatus(db_name, STATUS['MOVING'])
 
-    if len(cases) > 0:
-        [move_case(case_name, dest_path, export_path) for _, case_name, _, _, _, _ in cases]
+        if len(cases) > 0:
+            [move_case(case_name, dest_path, export_path) for _, case_name, _, _, _, _ in cases]
 
-    tok = time.time()
-    duration = tok - tik
+        tok = time.time()
+        duration = tok - tik
 
-    sleep_time = MOVE_CHECK_INTERVAL - duration
+        sleep_time = MOVE_CHECK_INTERVAL - duration
 
-    if sleep_time > 0:
-        time.sleep(sleep_time)
+        if sleep_time > 0:
+            time.sleep(sleep_time)

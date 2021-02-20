@@ -21,33 +21,36 @@ def sort_case(dest_path, tmp_path, case_name, sorted_sample_ids, ext):
 
             all_tmp_filenames.append(tmp_file)
 
-            shutil.move(ori_file, tmp_file)
+            if not SORT_SIMULATION:
+                shutil.move(ori_file, tmp_file)
 
         for tmp_file in all_tmp_filenames:
             base_filename = os.path.basename(tmp_file)
             dest_file = os.path.join(dest_path, base_filename)
 
-            shutil.move(tmp_file, dest_file)
+            if not SORT_SIMULATION:
+                shutil.move(tmp_file, dest_file)
 
         updateCaseStatus(db_name, case_name, STATUS['FINISHED'])
     except Exception as err:
         print('sort_case error: {}'.format(err))
 
 if __name__ == '__main__':
-    tik = time.time()
+    while True:
+        tik = time.time()
 
-    # check sorting cases
-    cases = getCasesByStatus(db_name, STATUS['SORTING'])
+        # check sorting cases
+        cases = getCasesByStatus(db_name, STATUS['SORTING'])
 
-    if len(cases) > 0:
-        for _, case_name, _, _, _, _ in cases:
-            sorted_sample_ids = sortCaseByScore(db_name, case_name)
-            sort_case(src_path, tmp_path, case_name, sorted_sample_ids, SRC_EXT)
+        if len(cases) > 0:
+            for _, case_name, _, _, _, _ in cases:
+                sorted_sample_ids = sortCaseByScore(db_name, case_name)
+                sort_case(src_path, tmp_path, case_name, sorted_sample_ids, SRC_EXT)
 
-    tok = time.time()
-    duration = tok - tik
+        tok = time.time()
+        duration = tok - tik
 
-    sleep_time = SORT_CHECK_INTERVAL - duration
+        sleep_time = SORT_CHECK_INTERVAL - duration
 
-    if sleep_time > 0:
-        time.sleep(sleep_time)
+        if sleep_time > 0:
+            time.sleep(sleep_time)

@@ -39,18 +39,19 @@ def score_case(case_name):
         print('score_case error: {}'.format(err))
 
 if __name__ == '__main__':
-    tik = time.time()
+    while True:
+        tik = time.time()
 
-    # check scoring cases
-    cases = getCasesByStatus(db_name, STATUS['SCORING'])
+        # check scoring cases
+        cases = getCasesByStatus(db_name, STATUS['SCORING'])
 
-    if len(cases) > 0:
-        [score_case(case_name) for _, case_name, _, _, _, _ in cases]
+        if len(cases) > 0:
+            [score_case(case_name) for _, case_name, _, _, _, _ in cases]
 
-    tok = time.time()
-    duration = tok - tik
+        tok = time.time()
+        duration = tok - tik
 
-    sleep_time = SCORE_CHECK_INTERVAL - duration
+        sleep_time = SCORE_CHECK_INTERVAL - duration
 
-    if sleep_time > 0:
-        time.sleep(sleep_time)
+        if sleep_time > 0:
+            time.sleep(sleep_time)
