@@ -33,6 +33,8 @@ class DestHandler(FileSystemEventHandler):
                     if (scan_count == 0) and (export_count > 0):
                         updateCaseStatus(db_name, case_name, STATUS['MOVING'])         
                 else:
+                    # TODO : if export is too close to scan, we may get NEW status
+
                     print('DestHandler::on_created error, unexpected status: {}'.format(list(STATUS.keys())[status]))
                     return
 

@@ -77,7 +77,7 @@ if __name__ == '__main__':
         for case in range(g_cases):
             create_mmi(mmi_path, 'G', case, g_samples_per_case, SRC_EXT)
 
-        time.sleep(10)
+        time.sleep(3) # NEW status error workaround
 
         print('create export files')
         for case in range(l_cases):
