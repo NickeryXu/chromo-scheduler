@@ -1,19 +1,20 @@
 # on 1080Ti: total: 35.42738127708435s, avg: 0.03542738127708435s, fps: 28.22675467257396
 # on 1080Ti bathsize=8: total: 25.644643783569336s, avg: 0.03205580472946167s, fps: 31.195598065299095
+
 import time
 
 from core_handler import *
 from core_config import *
 
 # consts
-test_path = './test'
+test_path = './test/pic'
 filename = 'test-{}.jpg'
 
 test_round = 100
 test_file = 8
 
 # ai core
-handler = CoreHandler(use_core)
+handler = CoreHandler(activate_core_name)
 
 image_path = os.path.join(test_path, filename)
 
