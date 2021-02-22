@@ -207,7 +207,7 @@ def updateScore(db_name, case_name, sample_id, score):
 
         return True
     except sqlite3.Error as error:
-        print('createNewScore sqlite3 error, {}'.format(error))
+        print('updateScore sqlite3 error, {}'.format(error))
         return False
     finally:
         if conn:

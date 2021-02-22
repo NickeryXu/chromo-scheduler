@@ -20,21 +20,23 @@ if __name__ == '__main__':
         cases = getCasesByStatus(db_name, STATUS['MOVING'])
 
         if len(cases) > 0:
-            [move_case(case_name, dest_path, export_path) for _, case_name, _, _, _, _ in cases]
+            [move_case(case_name, export_path, dest_path) for _, case_name, _, _, _ in cases]
 
         # score
         cases = getCasesByStatus(db_name, STATUS['SCORING'])
 
         if len(cases) > 0:
-            [score_case(case_name) for _, case_name, _, _, _, _ in cases]
+            [score_case(case_name, dest_path, EXPORT_EXT) for _, case_name, _, _, _ in cases]
 
         # sort
+        '''
         cases = getCasesByStatus(db_name, STATUS['SORTING'])
 
         if len(cases) > 0:
             for _, case_name, _, _, _, _ in cases:
                 sorted_sample_ids = sortCaseByScore(db_name, case_name)
                 sort_case(src_path, tmp_path, case_name, sorted_sample_ids, SRC_EXT)
+        '''
 
         tok = time.time()
         duration = tok - tik

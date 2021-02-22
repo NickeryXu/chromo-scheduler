@@ -34,6 +34,7 @@ def move_case(case_name, export_path, dest_path):
     except Exception as err:
         print('move_case error: {}'.format(err))
 
+'''
 if __name__ == '__main__':
     while True:
         tik = time.time()
@@ -51,3 +52,4 @@ if __name__ == '__main__':
 
         if sleep_time > 0:
             time.sleep(sleep_time)
+'''
