@@ -5,11 +5,16 @@ import time
 import logging
 import shutil
 from datetime import datetime
+import traceback
 
 from db_ops import *
 from consts import *
+from utils import *
 
 def binary_search(sorted, target):
+    if len(sorted) == 0:
+        return -1
+
     l = 0
     r = len(sorted)
 
@@ -29,20 +34,34 @@ def binary_search(sorted, target):
     return l
 
 def filter_file(filenames, start, last_file):
-    files = [filename for filename in filenames if filename[0] == start].sort()
+    files = [filename for filename in filenames if filename[0] == start]
+    files.sort()
 
-    last_index = binary_search(files, last_file)
+    if files is None or len(files) == 0:
+        return [], ''
 
-    new_files = []
+    if last_file == '':
+        last_index = -1
+    else:
+        last_index = binary_search(files, last_file)
 
-    if last_index > 0:
-        new_files = files[last_index+1:]
+    new_files = files[last_index+1:]
 
     return new_files, files[-1]
 
 def get_cases(new_files):
-    pass
-    return []
+    cases = []
+
+    for new_file in new_files:
+        case_name, _ = split_filename(new_file)
+        cases.append(case_name)
+
+    return list(set(cases))
+
+def create_score(filename):
+    case_name, sample_id = split_filename(filename)
+
+    return createNewScore(db_name, case_name, int(sample_id), LONG_STATUS['SCANNED'], -1)
 
 if __name__ == '__main__':
     last_l_file = ''
@@ -51,29 +70,37 @@ if __name__ == '__main__':
     while True:
         tik = time.time()
 
-        # list mmi files
-        filenames = [filename for filename in os.listdir(src_path) if SRC_EXT in filename]
+        try:
+            # list mmi files
+            filenames = [filename for filename in os.listdir(os.path.join(src_path, month_path())) if SRC_EXT in filename]
+            
+            if len(filenames) == 0:
+                continue
 
-        # filter
-        new_l_files = filter_file(filenames, 'L', last_l_file)
-        new_g_files = filter_file(filenames, 'G', last_g_file)
+            # filter
+            new_l_files, last_l_file = filter_file(filenames, 'L', last_l_file)
+            new_g_files, last_g_file = filter_file(filenames, 'G', last_g_file)
 
-        # get cases
-        new_l_cases = get_cases(new_l_files)
-        new_g_cases = get_cases(new_g_files)
+            # get cases
+            new_l_cases = get_cases(new_l_files)
+            new_g_cases = get_cases(new_g_files)
 
-        # this might be problemic for partially scanned cases
-        # we should record detailed scanning progress in db
-        
-        # check and create new cases
+            # check and create new cases
+            [createNewCase(db_name, case_name) for case_name in new_l_cases]
+            [createNewCase(db_name, case_name) for case_name in new_g_cases]
 
-        # update scan count
-        
+            # update scan count
+            [create_score(new_l_file) for new_l_file in new_l_files]
+            [create_score(new_g_file) for new_g_file in new_g_files]
 
-        tok = time.time()
-        duration = tok - tik
+        except Exception as err:
+            print('lister.py error: {}'.format(err))
+            traceback.print_exc()
+        finally:
+            tok = time.time()
+            duration = tok - tik
 
-        sleep_time = LIST_CHECK_INTERVAL - duration
+            sleep_time = LIST_CHECK_INTERVAL - duration
 
-        if sleep_time > 0:
-            time.sleep(sleep_time)
+            if sleep_time > 0:
+                time.sleep(sleep_time)
