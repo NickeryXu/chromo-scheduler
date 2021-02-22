@@ -16,6 +16,7 @@ LONG_STATUS = {
 
 # sqlite3
 db_name = 'scheduler.db'
+SQLITE3_CONNECTION_TIMEOUT = 30 # to reslove "database is locked"
 
 # lister
 LIST_CHECK_INTERVAL = 3 # sec

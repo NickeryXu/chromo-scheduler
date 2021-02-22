@@ -10,7 +10,7 @@ def argsort(seq):
 
 def createNewCase(db_name, case_name):
     try:
-        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
     
         cursor.execute('select * from cases where name=?', (case_name,))
@@ -40,7 +40,7 @@ def createNewCase(db_name, case_name):
 
 def getCaseStatus(db_name, case_name):
     try:
-        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
     
         cursor.execute('select * from cases where name=?', (case_name,))
@@ -83,7 +83,7 @@ def getCaseStatus(db_name, case_name):
 
 def getCasesByStatus(db_name, status):
     try:
-        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
     
         cursor.execute('select * from cases where status=?', (status,))
@@ -101,7 +101,7 @@ def getCasesByStatus(db_name, status):
 
 def updateCaseStatus(db_name, case_name, status):
     try:
-        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
     
         cursor.execute('select * from cases where name=?', (case_name,))
@@ -135,7 +135,7 @@ def updateCaseStatus(db_name, case_name, status):
 
 def createNewScore(db_name, case_name, sample_id, status, score):
     try:
-        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
 
         # check if this score is already created
@@ -167,7 +167,7 @@ def createNewScore(db_name, case_name, sample_id, status, score):
 
 def getScores(db_name, case_name, status):
     try:
-        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
 
         cursor.execute(
@@ -188,7 +188,7 @@ def getScores(db_name, case_name, status):
 
 def updateScore(db_name, case_name, sample_id, score):
     try:
-        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
     
         update_tuple = (
@@ -215,7 +215,7 @@ def updateScore(db_name, case_name, sample_id, score):
 
 def updateScoreStatus(db_name, case_name, sample_id, status):
     try:
-        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
     
         update_tuple = (
@@ -241,7 +241,7 @@ def updateScoreStatus(db_name, case_name, sample_id, status):
 
 def sortCaseByScore(db_name, case_name):
     try:
-        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
 
         cursor.execute('select * from scores where case_name=?', (case_name,))
