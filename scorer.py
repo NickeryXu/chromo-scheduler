@@ -16,6 +16,7 @@ handler = CoreHandler(activate_core_name)
 
 def score_case(case_name, dest_path, export_ext):
     try:
+        print(case_name)
         status, scan_count, export_count, _ = getCaseStatus(db_name, case_name)
 
         if status == STATUS['SCORING']:

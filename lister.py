@@ -63,44 +63,27 @@ def create_score(filename):
 
     return createNewScore(db_name, case_name, int(sample_id), LONG_STATUS['SCANNED'], -1)
 
-if __name__ == '__main__':
-    last_l_file = ''
-    last_g_file = ''
+def scan_list(src_path, src_ext, last_l_file, last_g_file):
+    # list mmi files
+    filenames = [filename for filename in os.listdir(os.path.join(src_path, month_path())) if src_ext in filename]
+    
+    if len(filenames) == 0:
+        return last_l_file, last_g_file
 
-    while True:
-        tik = time.time()
+    # filter
+    new_l_files, _last_l_file = filter_file(filenames, 'L', last_l_file)
+    new_g_files, _last_g_file = filter_file(filenames, 'G', last_g_file)
 
-        try:
-            # list mmi files
-            filenames = [filename for filename in os.listdir(os.path.join(src_path, month_path())) if SRC_EXT in filename]
-            
-            if len(filenames) == 0:
-                continue
+    # get cases
+    new_l_cases = get_cases(new_l_files)
+    new_g_cases = get_cases(new_g_files)
 
-            # filter
-            new_l_files, last_l_file = filter_file(filenames, 'L', last_l_file)
-            new_g_files, last_g_file = filter_file(filenames, 'G', last_g_file)
+    # check and create new cases
+    [createNewCase(db_name, case_name) for case_name in new_l_cases]
+    [createNewCase(db_name, case_name) for case_name in new_g_cases]
 
-            # get cases
-            new_l_cases = get_cases(new_l_files)
-            new_g_cases = get_cases(new_g_files)
+    # update scan count
+    [create_score(new_l_file) for new_l_file in new_l_files]
+    [create_score(new_g_file) for new_g_file in new_g_files]
 
-            # check and create new cases
-            [createNewCase(db_name, case_name) for case_name in new_l_cases]
-            [createNewCase(db_name, case_name) for case_name in new_g_cases]
-
-            # update scan count
-            [create_score(new_l_file) for new_l_file in new_l_files]
-            [create_score(new_g_file) for new_g_file in new_g_files]
-
-        except Exception as err:
-            print('lister.py error: {}'.format(err))
-            traceback.print_exc()
-        finally:
-            tok = time.time()
-            duration = tok - tik
-
-            sleep_time = LIST_CHECK_INTERVAL - duration
-
-            if sleep_time > 0:
-                time.sleep(sleep_time)
+    return _last_l_file, _last_g_file

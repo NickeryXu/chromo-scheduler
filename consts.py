@@ -21,6 +21,9 @@ SQLITE3_CONNECTION_TIMEOUT = 30 # to reslove "database is locked"
 # lister
 LIST_CHECK_INTERVAL = 3 # sec
 
+# scheduler
+SCHEDULE_CHECK_INTERVAL = 3 # sec
+
 # worker
 WORKER_CHECK_INTERVAL = 10 # sec
 
