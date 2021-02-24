@@ -10,6 +10,9 @@ from consts import *
 
 def move_case(case_name, export_path, dest_path):
     try:
+        if DEBUG:
+            print('moving: {}'.format(case_name))
+            
         status, scan_count, export_count, _ = getCaseStatus(db_name, case_name)
 
         if status == STATUS['MOVING']:

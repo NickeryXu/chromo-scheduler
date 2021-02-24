@@ -10,6 +10,9 @@ from consts import *
 
 def sort_case(dest_path, tmp_path, case_name, sorted_sample_ids, ext):
     try:
+        if DEBUG:
+            print('sorting: {}'.format(case_name))
+            
         all_tmp_filenames = []
 
         for i, sorted_sample_id in enumerate(sorted_sample_ids):

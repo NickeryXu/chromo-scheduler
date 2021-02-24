@@ -14,28 +14,34 @@ from consts import *
 # ai core
 handler = CoreHandler(activate_core_name)
 
-def score_case(case_name, dest_path, export_ext):
+def score_case(case_name, dest_path, export_ext, rescore=False):
     try:
-        print(case_name)
+        if DEBUG:
+            print('scoring: {}'.format(case_name))
+
         status, scan_count, export_count, _ = getCaseStatus(db_name, case_name)
 
-        if status == STATUS['SCORING']:
-            if (scan_count == 0) and (export_count > 0):
-                # score case in batch
-                filenames = ['{}.{:03d}.{}'.format(case_name, i+1, export_ext) for i in range(export_count)]
-                img_paths = [os.path.join(dest_path, filename) for filename in filenames]
+        if rescore == False:
+            if status == STATUS['SCORING']:
+                if (scan_count == 0) and (export_count > 0):
+                    # score case in batch
+                    filenames = ['{}.{:03d}.{}'.format(case_name, i+1, export_ext) for i in range(export_count)]
+                    img_paths = [os.path.join(dest_path, filename) for filename in filenames]
 
-                scores = handler.get_all_scores(img_paths)
-                [updateScore(db_name, case_name, i+1, score) for i, score in enumerate(scores)]
+                    scores = handler.get_all_scores(img_paths)
+                    [updateScore(db_name, case_name, i+1, score) for i, score in enumerate(scores)]
 
-                updateCaseStatus(db_name, case_name, STATUS['SORTING'])
+                    updateCaseStatus(db_name, case_name, STATUS['SORTING'])
+                else:
+                    print('score_case error, mismatched scan_count / export_count: {} / {}'.format(
+                        scan_count,
+                        export_count
+                    ))
             else:
-                print('score_case error, mismatched scan_count / export_count: {} / {}'.format(
-                    scan_count,
-                    export_count
-                ))
+                print('score_case error, unexpected status: {}'.format(status))
         else:
-            print('score_case error, unexpected status: {}'.format(status))
+            # TODO : re-score case
+            pass
     except Exception as err:
         print('score_case error: {}'.format(err))
 

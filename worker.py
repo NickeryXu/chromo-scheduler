@@ -66,5 +66,8 @@ if __name__ == '__main__':
 
             sleep_time = WORKER_CHECK_INTERVAL - duration
 
+            if DEBUG:
+                print('worker sleep time: {}s'.format(sleep_time))
+
             if sleep_time > 0:
                 time.sleep(sleep_time)
