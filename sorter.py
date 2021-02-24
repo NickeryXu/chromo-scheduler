@@ -23,6 +23,8 @@ def sort_case(dest_path, tmp_path, case_name, sorted_sample_ids, ext):
 
             if not SORT_SIMULATION:
                 shutil.move(ori_file, tmp_file)
+            else:
+                print('{} -> {}'.format(ori_file, tmp_file))
 
         for tmp_file in all_tmp_filenames:
             base_filename = os.path.basename(tmp_file)
@@ -30,6 +32,8 @@ def sort_case(dest_path, tmp_path, case_name, sorted_sample_ids, ext):
 
             if not SORT_SIMULATION:
                 shutil.move(tmp_file, dest_file)
+            else:
+                print('{} -> {}'.format(tmp_file, dest_file))
 
         updateCaseStatus(db_name, case_name, STATUS['FINISHED'])
     except Exception as err:

@@ -1,3 +1,5 @@
+DEBUG = True
+
 STATUS = {
     'NEW': 0,
     'SCANNING': 1,
