@@ -165,6 +165,38 @@ def createNewScore(db_name, case_name, sample_id, status, score):
         if conn:
             conn.close()
 
+def createCaseScore(db_name, case_name, sample_ids, status, score):
+    try:
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            'select sample_id from scores where case_name=?',
+            (case_name, )
+        )
+        existed_sample_ids = cursor.fetchall()
+
+        for sample_id in sample_ids:
+            if sample_id not in existed_sample_ids:
+                insert_tuple = (
+                    case_name,
+                    sample_id,
+                    status,
+                    score
+                )
+                cursor.execute('''insert into scores values (NULL, ?, ?, ?, ?, datetime('now', 'localtime'))''', insert_tuple)
+
+        conn.commit()
+        cursor.close()
+
+        return True
+    except sqlite3.Error as error:
+        print('createCaseScore sqlite3 error, {}'.format(error))
+        return False
+    finally:
+        if conn:
+            conn.close()
+
 def getScores(db_name, case_name, status):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)

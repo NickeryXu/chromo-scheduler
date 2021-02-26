@@ -45,5 +45,5 @@ export_path = '/media/cs'
 dest_path = '/media/scheduler'
 tmp_path = './tmp'
 
-SRC_EXT = 'mmi' # must consider case
+SRC_EXT = 'MMI' # must consider case
 EXPORT_EXT = 'jpg'
