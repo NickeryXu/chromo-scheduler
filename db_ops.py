@@ -174,7 +174,7 @@ def createCaseScore(db_name, case_name, sample_ids, status, score):
             'select sample_id from scores where case_name=?',
             (case_name, )
         )
-        existed_sample_ids = cursor.fetchall()
+        existed_sample_ids = [id_tuple[0] for id_tuple in cursor.fetchall()]
 
         for sample_id in sample_ids:
             if sample_id not in existed_sample_ids:
