@@ -41,9 +41,9 @@ SORT_SIMULATION = True # VERY IMPORTANT! SET TO FALSE AFTER DEBUGGING!
 
 # global config
 src_path = '/media/msd'
-export_path = '/media/cs'
+export_path = '/media/cs/test'
 dest_path = '/media/scheduler'
 tmp_path = './tmp'
 
 SRC_EXT = 'MMI' # must consider case
-EXPORT_EXT = 'jpg'
+EXPORT_EXT = 'JPG'

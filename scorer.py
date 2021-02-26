@@ -25,7 +25,7 @@ def score_case(case_name, dest_path, export_ext, rescore=False):
             if status == STATUS['SCORING']:
                 if (scan_count == 0) and (export_count > 0):
                     # score case in batch
-                    filenames = ['{}.{:03d}.{}'.format(case_name, i+1, export_ext) for i in range(export_count)]
+                    filenames = ['{}.{:03d}.A.{}'.format(case_name, i+1, export_ext) for i in range(export_count)]
                     img_paths = [os.path.join(dest_path, filename) for filename in filenames]
 
                     scores = handler.get_all_scores(img_paths)
