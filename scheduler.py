@@ -71,6 +71,10 @@ def export_scheduler(export_path, export_ext, last_l_file, last_g_file):
     new_l_files, _last_l_file = filter_file(filenames, 'L', last_l_file)
     new_g_files, _last_g_file = filter_file(filenames, 'G', last_g_file)
 
+    if DEBUG:
+        print('scheduler: got {} new_l_files'.format(len(new_l_files)))
+        print('scheduler: got {} new_g_files'.format(len(new_g_files)))
+
     # update export count
     [update_score(new_l_file) for new_l_file in new_l_files]
     [update_score(new_g_file) for new_g_file in new_g_files]
