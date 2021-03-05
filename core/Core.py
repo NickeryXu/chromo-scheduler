@@ -15,6 +15,8 @@ import torchvision
 from .models import * # cp from /home/voyager/jpz/chromosome/models
 from .transforms import * # cp from /home/voyager/jpz/chromosome/transforms.py
 
+from .temperature_scaling import ModelWithTemperature
+
 ORIGINAL_SIZE = 1024
 INPUT_SIZE = 512 # model input
 
@@ -161,6 +163,8 @@ class ClassifyCore(AbstractCore):
             raise Exception('No such model {} in core/models/'.format(model_type))
         
         self.net = globals()[model_type](False, num_classes=num_classes)
+        self.net = ModelWithTemperature(self.net)
+
         checkpoint = torch.load(model_path, map_location=lambda storage,loc: storage)
 
         # self.net.load_state_dict(checkpoint['net'])
