@@ -64,6 +64,9 @@ def export_scheduler(export_path, export_ext, last_l_file, last_g_file):
     # list export files
     filenames = [filename for filename in os.listdir(export_path) if export_ext in filename]
     
+    if DEBUG:
+        print('scheduler: got {} available files'.format(len(filenames)))
+
     if len(filenames) == 0:
         return last_l_file, last_g_file
 
