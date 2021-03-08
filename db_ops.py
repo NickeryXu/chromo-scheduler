@@ -131,6 +131,40 @@ def updateCaseStatus(db_name, case_name, status):
         if conn:
             conn.close()
 
+'''
+def updateCaseScanCount(db_name, case_name, scan_count):
+    try:
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
+        cursor = conn.cursor()
+    
+        cursor.execute('select * from cases where name=?', (case_name,))
+        cases = cursor.fetchall()
+
+        if len(cases) > 1:
+            print('updateCaseScanCount error, got {} case(s): {}'.format(len(cases), case_name))
+
+            return False
+        elif len(cases) == 1:
+            case_id = cases[0][0]
+
+            update_tuple = (
+                scan_count,
+                case_id
+            )
+
+            cursor.execute('''update cases set scan_count=?, update_time=datetime('now', 'localtime') where id=?''', update_tuple)
+
+            conn.commit()
+
+            return True
+    except sqlite3.Error as error:
+        print('updateCaseScanCount sqlite3 error, {}'.format(error))
+        return False
+    finally:
+        if conn:
+            conn.close()
+'''
+
 # scores
 
 def createNewScore(db_name, case_name, sample_id, status, score):
@@ -271,6 +305,31 @@ def updateScoreStatus(db_name, case_name, sample_id, status):
         if conn:
             conn.close()
 
+def removeCaseScores(db_name, case_name, score_status):
+    try:
+        conn = sqlite3.connect(
+            db_name,
+            detect_types=sqlite3.PARSE_DECLTYPES,
+            timeout=SQLITE3_CONNECTION_TIMEOUT
+        )
+        cursor = conn.cursor()
+
+        cursor.execute(
+            'delete from scores where case_name=? and status=?',
+            (case_name, score_status)
+        )
+
+        conn.commit()
+        cursor.close()
+
+        return True
+    except sqlite3.Error as error:
+        print('removeCaseScores sqlite3 error, {}'.format(error))
+        return False
+    finally:
+        if conn:
+            conn.close()
+
 def sortCaseByScore(db_name, case_name):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
@@ -293,6 +352,30 @@ def sortCaseByScore(db_name, case_name):
     except sqlite3.Error as error:
         print('sortCaseByScore sqlite3 error, {}'.format(error))
         return False
+    finally:
+        if conn:
+            conn.close()
+
+def updateCaseScoreSampleIds(db_name, case_name, sorted_sample_ids):
+    try:
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
+        cursor = conn.cursor()
+
+        cursor.execute('select * from scores where case_name=? order by sample_id asc', (case_name,))
+        scores = cursor.fetchall()
+
+        id_map = {}
+
+        for score in scores:
+            id_map[score[2]] = score[0]
+
+        for i, sorted_sample_id in enumerate(sorted_sample_ids):
+            cursor.execute(
+                'update scores set sample_id=? where id=?',
+                (sorted_sample_id, id_map[i+1])
+            )
+    except sqlite3.Error as error:
+        print('sortCaseByScore sqlite3 error, {}'.format(error))
     finally:
         if conn:
             conn.close()

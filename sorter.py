@@ -51,7 +51,13 @@ if __name__ == '__main__':
 
         if len(cases) > 0:
             for _, case_name, _, _, _, _ in cases:
+                # 1. compute new id list
                 sorted_sample_ids = sortCaseByScore(db_name, case_name)
+
+                # 2. update db
+                updateCaseScoreSampleIds(db_name, case_name, sorted_sample_ids)
+
+                # 3. update file system
                 sort_case(src_path, tmp_path, case_name, sorted_sample_ids, SRC_EXT)
 
         tok = time.time()

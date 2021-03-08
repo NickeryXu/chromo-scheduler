@@ -18,9 +18,6 @@ from sorter import sort_case
 if __name__ == '__main__':
     last_l_mmi = ''
     last_g_mmi = ''
-    
-    last_l_export = ''
-    last_g_export = ''
 
     while True:
         tik = time.time()
@@ -33,9 +30,8 @@ if __name__ == '__main__':
             )
 
             # schedule
-            last_l_export, last_g_export = export_scheduler(
-                export_path, EXPORT_EXT,
-                last_l_export, last_g_export
+            export_scheduler(
+                export_path, EXPORT_EXT
             )
 
             # move
@@ -67,7 +63,7 @@ if __name__ == '__main__':
             sleep_time = WORKER_CHECK_INTERVAL - duration
 
             if DEBUG:
-                print('worker sleep time: {}s'.format(sleep_time))
+                print('worker sleep time: {}s\n'.format(sleep_time))
 
             if sleep_time > 0:
                 time.sleep(sleep_time)

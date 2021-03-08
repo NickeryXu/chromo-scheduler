@@ -20,14 +20,14 @@ LONG_STATUS = {
 db_name = 'scheduler.db'
 SQLITE3_CONNECTION_TIMEOUT = 30 # to reslove "database is locked"
 
+# worker
+WORKER_CHECK_INTERVAL = 10 # sec
+
 # lister
 LIST_CHECK_INTERVAL = 3 # sec
 
 # scheduler
 SCHEDULE_CHECK_INTERVAL = 3 # sec
-
-# worker
-WORKER_CHECK_INTERVAL = 10 # sec
 
 # mover
 MOVE_CHECK_INTERVAL = 10 # sec
