@@ -22,7 +22,7 @@ def create_sql_web_tables(db_name):
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES)
         cursor = conn.cursor()
 
-        cursor.execute('create table users(id integer primary key autoincrement, name varchar(50), hash_password varchar(100), salt varchar(100), is_admin bool)')
+        cursor.execute('create table users(id integer primary key autoincrement, name varchar(50), hashed_password varchar(100), salt varchar(100), is_admin bool)')
         cursor.execute('create table setting(id integer primary key autoincrement, debug bool, src_path varchar(200), export_path varchar(200), dest_path varchar(200), tmp_path varchar(200), src_ext varchar(200), export_ext varchar(200), sort_simulation bool, worker_check_interval int)')
 
         conn.commit()
