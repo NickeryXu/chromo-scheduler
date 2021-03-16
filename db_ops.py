@@ -131,7 +131,7 @@ def updateCaseStatus(db_name, case_name, status):
         if conn:
             conn.close()
 
-'''
+"""
 def updateCaseScanCount(db_name, case_name, scan_count):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
@@ -163,7 +163,7 @@ def updateCaseScanCount(db_name, case_name, scan_count):
     finally:
         if conn:
             conn.close()
-'''
+"""
 
 # scores
 
