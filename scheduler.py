@@ -37,7 +37,7 @@ def reset_export(db_name, case_name, sample_id):
 def update_score(filename):
     case_name, sample_id = split_filename(filename)
     status, scan_count, export_count, score_count = getCaseStatus(db_name, case_name)
-
+    
     if status == STATUS['SCANNING']:
         updateScoreStatus(db_name, case_name, int(sample_id), LONG_STATUS['EXPORTED'])
         updateCaseStatus(db_name, case_name, STATUS['EXPORTING'])

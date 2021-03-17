@@ -65,14 +65,14 @@ def getCaseStatus(db_name, case_name):
         score_count = cursor.fetchone()[0]
 
         cursor.close()
-
+        
         if len(cases) > 1:
             print('getCaseStatus error, got {} same cases: {}'.format(len(cases), case_name))
         elif len(cases) == 1:
             _, _, status, _, _ = cases[0]
 
             return status, scan_count, export_count, score_count
-        else:
+        else: # len(cases) <= 0
             return STATUS['NEW'], 0, 0, 0
     except sqlite3.Error as error:
         print('getCaseStatus sqlite3 error, {}'.format(error))
