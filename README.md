@@ -23,9 +23,7 @@ mkdir ./tmp
 
 ```sh
 conda activate chromo-scheduler
-nohup python lister.py > lister.log &
-nohup python scheduler.py > scheduler.log &
-nohup python worker.py > worker.log &
+nohup python -u worker.py > worker.log 2>&1 &
 ```
 
 ## Tests

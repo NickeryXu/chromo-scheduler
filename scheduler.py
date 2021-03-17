@@ -41,10 +41,12 @@ def update_score(filename):
     if status == STATUS['SCANNING']:
         updateScoreStatus(db_name, case_name, int(sample_id), LONG_STATUS['EXPORTED'])
         updateCaseStatus(db_name, case_name, STATUS['EXPORTING'])
-    elif (status == STATUS['EXPORTING']) and (scan_count == 0) and (export_count > 0):
+    elif (status == STATUS['EXPORTING']) and (scan_count == 1) and (export_count > 0):
         updateScoreStatus(db_name, case_name, int(sample_id), LONG_STATUS['EXPORTED'])
         updateCaseStatus(db_name, case_name, STATUS['MOVING'])
-    else:
+    elif status == STATUS['EXPORTING']:
+        updateScoreStatus(db_name, case_name, int(sample_id), LONG_STATUS['EXPORTED'])
+    elif status == STATUS['FINISHED']:
         reset_export(db_name, case_name, sample_id)
 
 def export_scheduler(export_path, export_ext):
