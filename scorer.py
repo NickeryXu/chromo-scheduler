@@ -4,6 +4,7 @@ import time
 import logging
 import shutil
 from datetime import datetime
+import traceback
 
 from core_handler import *
 from core_config import *
@@ -44,6 +45,7 @@ def score_case(case_name, dest_path, export_ext, rescore=False):
             pass
     except Exception as err:
         print('score_case error: {}'.format(err))
+        traceback.print_exc(file=sys.stdout)
 
 '''
 if __name__ == '__main__':

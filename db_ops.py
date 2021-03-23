@@ -70,6 +70,7 @@ def getCaseStatus(db_name, case_name):
             print('getCaseStatus error, got {} same cases: {}'.format(len(cases), case_name))
         elif len(cases) == 1:
             _, _, status, _, _ = cases[0]
+            # print(status, scan_count, export_count, score_count)
 
             return status, scan_count, export_count, score_count
         else: # len(cases) <= 0

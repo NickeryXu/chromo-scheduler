@@ -151,7 +151,7 @@ class ClassifyCore(AbstractCore):
         
         self.trans = transforms.Compose([
             PadSquare(),
-            transforms.Resize(INPUT_SIZE),
+            transforms.Resize((INPUT_SIZE, INPUT_SIZE)),
             transforms.ToTensor(),
             transforms.Normalize(
                 mean=[0.485, 0.456, 0.406],
