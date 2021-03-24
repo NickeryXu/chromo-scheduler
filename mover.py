@@ -52,7 +52,7 @@ if __name__ == '__main__':
         cases = getCasesByStatus(db_name, STATUS['MOVING'])
 
         if len(cases) > 0:
-            [move_case(case_name, export_path, dest_path) for _, case_name, _, _, _ in cases]
+            [move_case(case_name, export_path, dest_path) for _, case_name, _, _, _, _ in cases]
 
         tok = time.time()
         duration = tok - tik

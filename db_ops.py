@@ -8,7 +8,7 @@ def argsort(seq):
 
 # cases
 
-def createNewCase(db_name, case_name):
+def createNewCase(db_name, case_name, month_path):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
@@ -22,10 +22,11 @@ def createNewCase(db_name, case_name):
         else:
             insert_tuple = (
                 case_name,
-                STATUS['SCANNING']
+                STATUS['SCANNING'],
+                month_path
             )
 
-            cursor.execute('''insert into cases (name, status, create_time, update_time) values (?, ?, datetime('now', 'localtime'), datetime('now', 'localtime'))''', insert_tuple)
+            cursor.execute('''insert into cases (name, status, month_path, create_time, update_time) values (?, ?, ?, datetime('now', 'localtime'), datetime('now', 'localtime'))''', insert_tuple)
             conn.commit()
 
             cursor.close()
@@ -69,7 +70,7 @@ def getCaseStatus(db_name, case_name):
         if len(cases) > 1:
             print('getCaseStatus error, got {} same cases: {}'.format(len(cases), case_name))
         elif len(cases) == 1:
-            _, _, status, _, _ = cases[0]
+            _, _, status, _, _, _ = cases[0]
             # print(status, scan_count, export_count, score_count)
 
             return status, scan_count, export_count, score_count
@@ -123,6 +124,7 @@ def updateCaseStatus(db_name, case_name, status):
             cursor.execute('''update cases set status=?, update_time=datetime('now', 'localtime') where id=?''', update_tuple)
 
             conn.commit()
+            cursor.close()
 
             return True
     except sqlite3.Error as error:
@@ -342,7 +344,7 @@ def sortCaseByScore(db_name, case_name):
         cursor.close()
 
         sample_ids = [score[2] for score in scores]
-        score_list = [score[3] for score in scores]
+        score_list = [score[4] for score in scores]
 
         sorted_indices = argsort(score_list)
         sorted_indices.reverse()

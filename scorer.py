@@ -56,7 +56,7 @@ if __name__ == '__main__':
         cases = getCasesByStatus(db_name, STATUS['SCORING'])
 
         if len(cases) > 0:
-            [score_case(case_name) for _, case_name, _, _, _ in cases]
+            [score_case(case_name) for _, case_name, _, _, _, _ in cases]
 
         tok = time.time()
         duration = tok - tik

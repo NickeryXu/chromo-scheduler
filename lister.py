@@ -68,13 +68,15 @@ def create_case_score(case_name, sample_ids):
     return createCaseScore(db_name, case_name, sample_ids, LONG_STATUS['SCANNED'], -1)
 
 def scan_list(src_path, src_ext, last_l_file, last_g_file):
+    m_path = month_path()
+
     if DEBUG:
-        list_path = os.path.join(src_path, month_path())
+        list_path = os.path.join(src_path, m_path)
         print('lister: list_path {}'.format(list_path))
         print('lister: last_l_file {}, last_g_file {}'.format(last_l_file, last_g_file))
     
     # list mmi files
-    filenames = [filename for filename in os.listdir(os.path.join(src_path, month_path())) if src_ext in filename]
+    filenames = [filename for filename in os.listdir(os.path.join(src_path, m_path)) if src_ext in filename]
     
     if DEBUG:
         print('lister: got {} available files'.format(len(filenames)))
@@ -95,8 +97,8 @@ def scan_list(src_path, src_ext, last_l_file, last_g_file):
         print('lister: got {} new_g_cases'.format(len(new_g_cases)))
 
     # check and create new cases
-    [createNewCase(db_name, case_name) for case_name in new_l_cases]
-    [createNewCase(db_name, case_name) for case_name in new_g_cases]
+    [createNewCase(db_name, case_name, m_path) for case_name in new_l_cases]
+    [createNewCase(db_name, case_name, m_path) for case_name in new_g_cases]
 
     # update scan count
     [create_case_score(case_name, sample_ids) for case_name, sample_ids in l_case_files.items()]
