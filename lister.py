@@ -34,7 +34,7 @@ def binary_search(sorted, target):
     return l
 
 def filter_file(filenames, start, last_file):
-    files = [filename for filename in filenames if filename[0] == start]
+    files = [filename for filename in filenames if (filename[0] == start) and (filename[1]=='2')]
     files.sort()
 
     if files is None or len(files) == 0:
