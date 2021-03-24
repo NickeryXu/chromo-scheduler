@@ -26,7 +26,13 @@ class CoreDataset(Dataset):
         self.trans = trans
 
     def __getitem__(self, i):
-        img = Image.open(self.img_paths[i])
+        try:
+            img = Image.open(self.img_paths[i])
+        except:
+            if i == 0:
+                img = Image.open(self.img_paths[i+1])
+            else:
+                img = Image.open(self.img_paths[i-1])
 
         if img.mode == 'I':
             img = _convert_I16_to_L(img)
