@@ -32,6 +32,12 @@ def move_case(case_name, export_path, dest_path):
                     scan_count,
                     export_count
                 ))
+
+                # fix this situation
+                if scan_count == 1:
+                    scores = getScores(db_name, case_name, LONG_STATUS['SCANNED'])
+                    _, _, sample_id, _, _, _ = scores[0]
+                    updateScoreStatus(db_name, case_name, sample_id, LONG_STATUS['EXPORTED'])
         else:
             print('move_case error, unexpected status: {}'.format(status))
     except Exception as err:
