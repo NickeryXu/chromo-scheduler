@@ -37,13 +37,14 @@ SCORE_CHECK_INTERVAL = 10 # sec
 
 # sorter
 SORT_CHECK_INTERVAL = 10 # sec
-SORT_SIMULATION = True # VERY IMPORTANT! SET TO FALSE AFTER DEBUGGING!
+SORT_SIMULATION = False # VERY IMPORTANT! SET TO FALSE AFTER DEBUGGING!
 
 # global config
 src_path = '/media/msd'
 export_path = '/media/cs/test'
 dest_path = '/media/scheduler'
 tmp_path = './tmp'
+backup_path = './backup'
 
 SRC_EXT = 'MMI' # must consider case
 EXPORT_EXT = 'JPG'
