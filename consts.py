@@ -1,5 +1,5 @@
 DEBUG = True
-TRACK = True
+TRACK = False
 
 STATUS = {
     'NEW': 0,
