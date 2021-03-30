@@ -9,15 +9,16 @@ from db_ops import *
 from consts import *
 from utils import *
 
+
 def sort_case(dest_path, tmp_path, case_name, sorted_sample_ids, ext, month_path):
     try:
         if DEBUG:
             print('sorting: {}'.format(case_name))
-            
+
         all_tmp_filenames = []
 
         for i in range(len(sorted_sample_ids)):
-            f_name = '{}.{:03d}.{}'.format(case_name, i+1, ext)
+            f_name = '{}.{:03d}.{}'.format(case_name, i + 1, ext)
 
             ori_file = os.path.join(dest_path, month_path, f_name)
             tmp_file = os.path.join(tmp_path, f_name)
@@ -31,7 +32,7 @@ def sort_case(dest_path, tmp_path, case_name, sorted_sample_ids, ext, month_path
 
         for i, (tmp_file, sorted_sample_id) in enumerate(zip(all_tmp_filenames, sorted_sample_ids)):
             ori_filename = '{}.{:03d}.{}'.format(case_name, sorted_sample_id, ext)
-            mod_filename = '{}.{:03d}.{}'.format(case_name, i+1, ext)
+            mod_filename = '{}.{:03d}.{}'.format(case_name, i + 1, ext)
 
             ori_file = os.path.join(tmp_path, ori_filename)
             mod_file = os.path.join(dest_path, month_path, mod_filename)
@@ -49,7 +50,8 @@ def sort_case(dest_path, tmp_path, case_name, sorted_sample_ids, ext, month_path
         err_basename = os.path.basename(err_file)
 
         # list existed case MMI from tmp_path (fast)
-        filenames = [filename for filename in os.listdir(tmp_path) if (case_name in filename) and (err_basename not in filename)]
+        filenames = [filename for filename in os.listdir(tmp_path) if
+                     (case_name in filename) and (err_basename not in filename)]
 
         # make a safty copy to backup_path (fast)
         if not os.path.exists(backup_path):
@@ -75,6 +77,7 @@ def sort_case(dest_path, tmp_path, case_name, sorted_sample_ids, ext, month_path
                 print('{} -> {}'.format(tmp_file, dest_file))
 
         updateCaseStatus(db_name, case_name, STATUS['SORTING'])
+
 
 if __name__ == '__main__':
     while True:

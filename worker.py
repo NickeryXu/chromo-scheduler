@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     while True:
         tik = time.time()
-        
+
         try:
             # list
             last_l_mmi, last_g_mmi = scan_list(
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
             if len(cases) > 0:
                 [move_case(case_name, export_path, dest_path) for _, case_name, _, _, _, _ in cases]
-            
+
             if TRACK and len(cases) > 0:
                 print(f'Track Info: mover finish {len(cases)} times work in {round(time.time() - track_time, 2)}s')
                 print(f'Track Info: Every move spend {round((time.time() - track_time) / len(cases), 2)}s')
@@ -80,7 +80,7 @@ if __name__ == '__main__':
                 for _, case_name, _, month_path, _, _ in cases:
                     sorted_sample_ids = sortCaseByScore(db_name, case_name)
                     sort_case(src_path, tmp_path, case_name, sorted_sample_ids, SRC_EXT, month_path)
-            
+
             if len(cases) > 0 and TRACK and not SORT_SIMULATION:
                 # 统计进入实际排序的时长
                 print(f'Track Info: sorter finish {len(cases)} times work in {round(time.time() - track_time, 2)}s')

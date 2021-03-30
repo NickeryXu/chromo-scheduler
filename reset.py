@@ -1,49 +1,31 @@
-import shutil
+from consts import LONG_STATUS, STATUS, SQLITE3_CONNECTION_TIMEOUT, db_name
 import sqlite3
-import os
 
-src_path = '/voyager/home/2103-bak'
-month_path = '2103'
-new_path = '2103-bak02'
-db_name = 'scheduler.db'
-SQLITE3_CONNECTION_TIMEOUT = 30 # to reslove "database is locked"
 
-conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
-cursor = conn.cursor()
+def reset_case():
+    try:
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
+        cursor = conn.cursor()
+        case_name = input('please input case_name:\n')
+        count_case = cursor.execute(f'select count(*) from cases where name="{case_name}"').fetchone()
+        if not count_case:
+            raise sqlite3.OperationalError
+        count_score = cursor.execute(f'select count(*) from scores where case_name="{case_name}"').fetchone()
+        action = input(f'Info: find {count_score[0]} scores\npress Y/y to reset; press other key to quit\n')
+        if action == 'Y' or action == 'y':
+            # 更新scores表中score为-1, status为SCANNED/0
+            cursor.execute(
+                f'update scores set score={-1}, status={LONG_STATUS["SCANNED"]} where case_name="{case_name}"')
+            # 回滚cases表中status状态为SCANNING/1
+            cursor.execute(f'update cases set status={STATUS["SCANNING"]}')
+            conn.commit()
+            print('Info: Reset Success')
+        else:
+            return None
+    except sqlite3.OperationalError as e:
+        print(e)
+        print("Error: could not find target case in database")
 
-cursor.execute("select scores.case_name, scores.sample_id, scores.score from cases left join scores on cases.name=scores.case_name where cases.status=6 and cases.update_time >= '2021-03-25'")
-cases = cursor.fetchall()
-case_dict = {}
-for case_name, sample_id, score in cases:
-    if case_name not in case_dict:
-        case_dict[case_name] = [{'sample_id': str(sample_id).zfill(3), 'score': score, 'case_name': case_name}]
-    else:
-        case_dict[case_name].append({'sample_id': str(sample_id).zfill(3), 'score': score, 'case_name': case_name})
-for value in case_dict.values():
-    value.sort(key=lambda x: x['score'], reverse=True)
-    no = 1
-    for x in value:
-        x['No'] = str(no).zfill(3)
-        no += 1
-cursor.close()
-# print(case_dict['L2103123132'])
-for value in case_dict.values():
-    for x in value:
-        try:
-            f_name = x['case_name'] + '.' + x['sample_id'] + '.MMI' 
-            res_name = x['case_name'] + '.' + x['No'] + '.MMI'
-            ori_file = os.path.join(src_path, month_path, f_name)
-            tmp_file = os.path.join(src_path, new_path, res_name)
-            # shutil.copy(ori_file, tmp_file)
-            print(f'ori_file: {ori_file}\ntmp_file: {tmp_file}')
-            break
-        except OSError as e:
-            if 'busy' in str(e):
-                print(e)
-                print(f'ori_file: {ori_file}\ntmp_file: {tmp_file}')
-            else:
-                print(e)
-                raise KeyboardInterrupt
-        except Exception as e:
-            print(e)
-    # break
+
+if __name__ == '__main__':
+    reset_case()

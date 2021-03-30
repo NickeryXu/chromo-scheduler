@@ -8,11 +8,12 @@ from datetime import datetime
 from db_ops import *
 from consts import *
 
+
 def move_case(case_name, export_path, dest_path):
     try:
         if DEBUG:
             print('moving: {}'.format(case_name))
-            
+
         status, scan_count, export_count, _ = getCaseStatus(db_name, case_name)
 
         if status == STATUS['MOVING']:
@@ -42,6 +43,7 @@ def move_case(case_name, export_path, dest_path):
             print('move_case error, unexpected status: {}'.format(status))
     except Exception as err:
         print('move_case error: {}'.format(err))
+
 
 '''
 if __name__ == '__main__':

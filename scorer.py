@@ -15,6 +15,7 @@ from consts import *
 # ai core
 handler = CoreHandler(activate_core_name)
 
+
 def score_case(case_name, dest_path, export_ext, rescore=False):
     try:
         if DEBUG:
@@ -26,11 +27,11 @@ def score_case(case_name, dest_path, export_ext, rescore=False):
             if status == STATUS['SCORING']:
                 if (scan_count == 0) and (export_count > 0):
                     # score case in batch
-                    filenames = ['{}.{:03d}.A.{}'.format(case_name, i+1, export_ext) for i in range(export_count)]
+                    filenames = ['{}.{:03d}.A.{}'.format(case_name, i + 1, export_ext) for i in range(export_count)]
                     img_paths = [os.path.join(dest_path, filename) for filename in filenames]
 
                     scores = handler.get_all_scores(img_paths)
-                    [updateScore(db_name, case_name, i+1, score) for i, score in enumerate(scores)]
+                    [updateScore(db_name, case_name, i + 1, score) for i, score in enumerate(scores)]
 
                     updateCaseStatus(db_name, case_name, STATUS['SORTING'])
                 else:
@@ -46,6 +47,7 @@ def score_case(case_name, dest_path, export_ext, rescore=False):
     except Exception as err:
         print('score_case error: {}'.format(err))
         traceback.print_exc(file=sys.stdout)
+
 
 '''
 if __name__ == '__main__':

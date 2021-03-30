@@ -17,4 +17,3 @@ new_g_cases, _ = get_cases(new_g_files)
 
 print('l files: {}, l cases: {}'.format(len(new_l_files), len(new_l_cases)))
 print('g files: {}, g cases: {}'.format(len(new_g_files), len(new_g_cases)))
-

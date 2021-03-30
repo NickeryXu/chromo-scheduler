@@ -11,11 +11,13 @@ from db_ops import *
 from consts import *
 from utils import *
 
+
 def filter_file(filenames, start):
     files = [filename for filename in filenames if filename[0] == start]
     files.sort()
 
     return files
+
 
 # re-exporting - reset case and scores to beginning of exporting status
 def reset_export(db_name, case_name, sample_id):
@@ -34,10 +36,11 @@ def reset_export(db_name, case_name, sample_id):
     # 3. reset case status
     updateCaseStatus(db_name, case_name, STATUS['EXPORTING'])
 
+
 def update_score(filename):
     case_name, sample_id = split_filename(filename)
     status, scan_count, export_count, score_count = getCaseStatus(db_name, case_name)
-    
+
     if status == STATUS['SCANNING']:
         updateScoreStatus(db_name, case_name, int(sample_id), LONG_STATUS['EXPORTED'])
         updateCaseStatus(db_name, case_name, STATUS['EXPORTING'])
@@ -49,15 +52,16 @@ def update_score(filename):
     elif status == STATUS['FINISHED']:
         reset_export(db_name, case_name, sample_id)
 
+
 def export_scheduler(export_path, export_ext):
     if TRACK:
         track_time = time.time()
     # list export files
     filenames = [filename for filename in os.listdir(export_path) if export_ext in filename]
-    
+
     if DEBUG:
         print('scheduler: got {} available files'.format(len(filenames)))
-    
+
     if TRACK:
         print(f'Track Info: scheduler finish doing listdir in {round(time.time() - track_time, 2)}s')
         with open('track_info.csv', 'a+', encoding='utf-8') as f:
@@ -75,7 +79,7 @@ def export_scheduler(export_path, export_ext):
     if DEBUG:
         print('scheduler: got {} new_l_files'.format(len(new_l_files)))
         print('scheduler: got {} new_g_files'.format(len(new_g_files)))
-    
+
     if TRACK:
         print(f'Track Info: scheduler finish filterring files in {round(time.time() - track_time, 2)}s')
         with open('track_info.csv', 'a+', encoding='utf-8') as f:

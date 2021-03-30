@@ -11,6 +11,7 @@ from db_ops import *
 from consts import *
 from utils import *
 
+
 def binary_search(sorted, target):
     if len(sorted) == 0:
         return -1
@@ -33,8 +34,9 @@ def binary_search(sorted, target):
 
     return l
 
+
 def filter_file(filenames, start, last_file):
-    files = [filename for filename in filenames if (filename[0] == start) and (filename[1]=='2')]
+    files = [filename for filename in filenames if (filename[0] == start) and (filename[1] == '2')]
     files.sort()
 
     if files is None or len(files) == 0:
@@ -45,9 +47,10 @@ def filter_file(filenames, start, last_file):
     else:
         last_index = binary_search(files, last_file)
 
-    new_files = files[last_index+1:]
+    new_files = files[last_index + 1:]
 
     return new_files, files[-1]
+
 
 def get_cases(new_files):
     cases = []
@@ -64,8 +67,10 @@ def get_cases(new_files):
 
     return list(set(cases)), case_files
 
+
 def create_case_score(case_name, sample_ids):
     return createCaseScore(db_name, case_name, sample_ids, LONG_STATUS['SCANNED'], -1)
+
 
 def scan_list(src_path, src_ext, last_l_file, last_g_file):
     event_trick = time.time()
@@ -75,7 +80,7 @@ def scan_list(src_path, src_ext, last_l_file, last_g_file):
         list_path = os.path.join(src_path, m_path)
         print('lister: list_path {}'.format(list_path))
         print('lister: last_l_file {}, last_g_file {}'.format(last_l_file, last_g_file))
-    
+
     # list mmi files
     filenames = [filename for filename in os.listdir(os.path.join(src_path, m_path)) if src_ext in filename]
 
@@ -118,7 +123,7 @@ def scan_list(src_path, src_ext, last_l_file, last_g_file):
             write_lines = [round(time.time() - event_trick, 2), ',', len(new_l_cases), ',', len(new_g_cases), ',']
             f.writelines([str(x) for x in write_lines])
         event_trick = time.time()
-    
+
     if DEBUG:
         print('lister: got {} new_l_cases'.format(len(new_l_cases)))
         print('lister: got {} new_g_cases'.format(len(new_g_cases)))
@@ -142,5 +147,5 @@ def scan_list(src_path, src_ext, last_l_file, last_g_file):
         with open('track_info.csv', 'a+', encoding='utf-8') as f:
             write_lines = [round(time.time() - event_trick, 2), ',']
             f.writelines([str(x) for x in write_lines])
-    
+
     return _last_l_file, _last_g_file

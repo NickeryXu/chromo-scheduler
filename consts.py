@@ -18,27 +18,27 @@ LONG_STATUS = {
 }
 
 # sqlite3
-db_name = 'scheduler.db'
-SQLITE3_CONNECTION_TIMEOUT = 30 # to reslove "database is locked"
+db_name = 'D:\\work\\chromo-scheduler\\scheduler.db'
+SQLITE3_CONNECTION_TIMEOUT = 30  # to reslove "database is locked"
 
 # worker
-WORKER_CHECK_INTERVAL = 10 # sec
+WORKER_CHECK_INTERVAL = 10  # sec
 
 # lister
-LIST_CHECK_INTERVAL = 3 # sec
+LIST_CHECK_INTERVAL = 3  # sec
 
 # scheduler
-SCHEDULE_CHECK_INTERVAL = 3 # sec
+SCHEDULE_CHECK_INTERVAL = 3  # sec
 
 # mover
-MOVE_CHECK_INTERVAL = 10 # sec
+MOVE_CHECK_INTERVAL = 10  # sec
 
 # scorer
-SCORE_CHECK_INTERVAL = 10 # sec
+SCORE_CHECK_INTERVAL = 10  # sec
 
 # sorter
-SORT_CHECK_INTERVAL = 10 # sec
-SORT_SIMULATION = True # VERY IMPORTANT! SET TO FALSE AFTER DEBUGGING!
+SORT_CHECK_INTERVAL = 10  # sec
+SORT_SIMULATION = True  # VERY IMPORTANT! SET TO FALSE AFTER DEBUGGING!
 
 # global config
 src_path = '/media/msd'
@@ -47,5 +47,5 @@ dest_path = '/media/scheduler'
 tmp_path = './tmp'
 backup_path = './backup'
 
-SRC_EXT = 'MMI' # must consider case
+SRC_EXT = 'MMI'  # must consider case
 EXPORT_EXT = 'JPG'

@@ -2,9 +2,11 @@ from datetime import datetime
 import sqlite3
 from consts import *
 
+
 def argsort(seq):
     # http://stackoverflow.com/questions/3071415/efficient-method-to-calculate-the-rank-vector-of-a-list-in-python
     return sorted(range(len(seq)), key=seq.__getitem__)
+
 
 # cases
 
@@ -12,7 +14,7 @@ def createNewCase(db_name, case_name, month_path):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
-    
+
         cursor.execute('select * from cases where name=?', (case_name,))
         cases = cursor.fetchall()
 
@@ -26,7 +28,9 @@ def createNewCase(db_name, case_name, month_path):
                 month_path
             )
 
-            cursor.execute('''insert into cases (name, status, month_path, create_time, update_time) values (?, ?, ?, datetime('now', 'localtime'), datetime('now', 'localtime'))''', insert_tuple)
+            cursor.execute(
+                '''insert into cases (name, status, month_path, create_time, update_time) values (?, ?, ?, datetime('now', 'localtime'), datetime('now', 'localtime'))''',
+                insert_tuple)
             conn.commit()
 
             cursor.close()
@@ -39,11 +43,12 @@ def createNewCase(db_name, case_name, month_path):
         if conn:
             conn.close()
 
+
 def getCaseStatus(db_name, case_name):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
-    
+
         cursor.execute('select * from cases where name=?', (case_name,))
         cases = cursor.fetchall()
 
@@ -66,7 +71,7 @@ def getCaseStatus(db_name, case_name):
         score_count = cursor.fetchone()[0]
 
         cursor.close()
-        
+
         if len(cases) > 1:
             print('getCaseStatus error, got {} same cases: {}'.format(len(cases), case_name))
         elif len(cases) == 1:
@@ -74,7 +79,7 @@ def getCaseStatus(db_name, case_name):
             # print(status, scan_count, export_count, score_count)
 
             return status, scan_count, export_count, score_count
-        else: # len(cases) <= 0
+        else:  # len(cases) <= 0
             return STATUS['NEW'], 0, 0, 0
     except sqlite3.Error as error:
         print('getCaseStatus sqlite3 error, {}'.format(error))
@@ -83,11 +88,12 @@ def getCaseStatus(db_name, case_name):
         if conn:
             conn.close()
 
+
 def getCasesByStatus(db_name, status):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
-    
+
         cursor.execute('select * from cases where status=?', (status,))
         cases = cursor.fetchall()
 
@@ -101,11 +107,12 @@ def getCasesByStatus(db_name, status):
         if conn:
             conn.close()
 
+
 def updateCaseStatus(db_name, case_name, status):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
-    
+
         cursor.execute('select * from cases where name=?', (case_name,))
         cases = cursor.fetchall()
 
@@ -121,7 +128,8 @@ def updateCaseStatus(db_name, case_name, status):
                 case_id
             )
 
-            cursor.execute('''update cases set status=?, update_time=datetime('now', 'localtime') where id=?''', update_tuple)
+            cursor.execute('''update cases set status=?, update_time=datetime('now', 'localtime') where id=?''',
+                           update_tuple)
 
             conn.commit()
             cursor.close()
@@ -133,6 +141,7 @@ def updateCaseStatus(db_name, case_name, status):
     finally:
         if conn:
             conn.close()
+
 
 """
 def updateCaseScanCount(db_name, case_name, scan_count):
@@ -168,6 +177,7 @@ def updateCaseScanCount(db_name, case_name, scan_count):
             conn.close()
 """
 
+
 # scores
 
 def createNewScore(db_name, case_name, sample_id, status, score):
@@ -182,7 +192,7 @@ def createNewScore(db_name, case_name, sample_id, status, score):
         if len(scores) > 0:
             # print('createNewScore error, got {} score(s): {}.{}'.format(len(scores), case_name, sample_id))
             return True
-    
+
         insert_tuple = (
             case_name,
             sample_id,
@@ -202,6 +212,7 @@ def createNewScore(db_name, case_name, sample_id, status, score):
         if conn:
             conn.close()
 
+
 def createCaseScore(db_name, case_name, sample_ids, status, score):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
@@ -209,7 +220,7 @@ def createCaseScore(db_name, case_name, sample_ids, status, score):
 
         cursor.execute(
             'select sample_id from scores where case_name=?',
-            (case_name, )
+            (case_name,)
         )
         existed_sample_ids = [id_tuple[0] for id_tuple in cursor.fetchall()]
 
@@ -221,7 +232,8 @@ def createCaseScore(db_name, case_name, sample_ids, status, score):
                     status,
                     score
                 )
-                cursor.execute('''insert into scores values (NULL, ?, ?, ?, ?, datetime('now', 'localtime'))''', insert_tuple)
+                cursor.execute('''insert into scores values (NULL, ?, ?, ?, ?, datetime('now', 'localtime'))''',
+                               insert_tuple)
 
         conn.commit()
         cursor.close()
@@ -233,6 +245,7 @@ def createCaseScore(db_name, case_name, sample_ids, status, score):
     finally:
         if conn:
             conn.close()
+
 
 def getScores(db_name, case_name, status):
     try:
@@ -255,11 +268,12 @@ def getScores(db_name, case_name, status):
         if conn:
             conn.close()
 
+
 def updateScore(db_name, case_name, sample_id, score):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
-    
+
         update_tuple = (
             LONG_STATUS['SCORED'],
             score,
@@ -282,11 +296,12 @@ def updateScore(db_name, case_name, sample_id, score):
         if conn:
             conn.close()
 
+
 def updateScoreStatus(db_name, case_name, sample_id, status):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
         cursor = conn.cursor()
-    
+
         update_tuple = (
             status,
             case_name,
@@ -307,6 +322,7 @@ def updateScoreStatus(db_name, case_name, sample_id, status):
     finally:
         if conn:
             conn.close()
+
 
 def removeCaseScores(db_name, case_name, score_status):
     try:
@@ -332,6 +348,7 @@ def removeCaseScores(db_name, case_name, score_status):
     finally:
         if conn:
             conn.close()
+
 
 def sortCaseByScore(db_name, case_name):
     try:
@@ -359,6 +376,7 @@ def sortCaseByScore(db_name, case_name):
         if conn:
             conn.close()
 
+
 def updateCaseScoreSampleIds(db_name, case_name, sorted_sample_ids):
     try:
         conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
@@ -375,7 +393,7 @@ def updateCaseScoreSampleIds(db_name, case_name, sorted_sample_ids):
         for i, sorted_sample_id in enumerate(sorted_sample_ids):
             cursor.execute(
                 'update scores set sample_id=? where id=?',
-                (sorted_sample_id, id_map[i+1])
+                (sorted_sample_id, id_map[i + 1])
             )
     except sqlite3.Error as error:
         print('sortCaseByScore sqlite3 error, {}'.format(error))
