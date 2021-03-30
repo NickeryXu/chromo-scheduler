@@ -50,11 +50,20 @@ def update_score(filename):
         reset_export(db_name, case_name, sample_id)
 
 def export_scheduler(export_path, export_ext):
+    if TRACK:
+        track_time = time.time()
     # list export files
     filenames = [filename for filename in os.listdir(export_path) if export_ext in filename]
     
     if DEBUG:
         print('scheduler: got {} available files'.format(len(filenames)))
+    
+    if TRACK:
+        print(f'Track Info: scheduler finish doing listdir in {round(time.time() - track_time, 2)}s')
+        with open('track_info.csv', 'a+', encoding='utf-8') as f:
+            write_lines = [round(time.time() - track_time, 2), ',']
+            f.writelines([str(x) for x in write_lines])
+        track_time = time.time()
 
     if len(filenames) == 0:
         return
@@ -66,9 +75,22 @@ def export_scheduler(export_path, export_ext):
     if DEBUG:
         print('scheduler: got {} new_l_files'.format(len(new_l_files)))
         print('scheduler: got {} new_g_files'.format(len(new_g_files)))
+    
+    if TRACK:
+        print(f'Track Info: scheduler finish filterring files in {round(time.time() - track_time, 2)}s')
+        with open('track_info.csv', 'a+', encoding='utf-8') as f:
+            write_lines = [round(time.time() - track_time, 2), ',']
+            f.writelines([str(x) for x in write_lines])
+        track_time = time.time()
 
     # update export count
     [update_score(new_l_file) for new_l_file in new_l_files]
     [update_score(new_g_file) for new_g_file in new_g_files]
+
+    if TRACK:
+        print(f'Track Info: scheduler finish updating score in {round(time.time() - track_time, 2)}s')
+        with open('track_info.csv', 'a+', encoding='utf-8') as f:
+            write_lines = [round(time.time() - track_time, 2), ',']
+            f.writelines([str(x) for x in write_lines])
 
     return

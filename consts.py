@@ -1,4 +1,5 @@
 DEBUG = True
+TRACK = True
 
 STATUS = {
     'NEW': 0,
@@ -37,7 +38,7 @@ SCORE_CHECK_INTERVAL = 10 # sec
 
 # sorter
 SORT_CHECK_INTERVAL = 10 # sec
-SORT_SIMULATION = False # VERY IMPORTANT! SET TO FALSE AFTER DEBUGGING!
+SORT_SIMULATION = True # VERY IMPORTANT! SET TO FALSE AFTER DEBUGGING!
 
 # global config
 src_path = '/media/msd'
