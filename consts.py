@@ -18,8 +18,9 @@ LONG_STATUS = {
 }
 
 # sqlite3
-db_name = 'D:\\work\\chromo-scheduler\\scheduler.db'
+db_name = './scheduler.db'
 SQLITE3_CONNECTION_TIMEOUT = 30  # to reslove "database is locked"
+backup_db_name = './backup.db'
 
 # worker
 WORKER_CHECK_INTERVAL = 10  # sec
