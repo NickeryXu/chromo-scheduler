@@ -19,7 +19,40 @@ sudo chown voyager.voyager /media/scheduler
 mkdir ./tmp
 ```
 
-3. start pipeline  
+3. update config.py
+
+```py
+DEBUG = True
+TRACK = False
+
+SORT_SIMULATION = True  # VERY IMPORTANT! SET TO FALSE AFTER DEBUGGING!
+
+# global config
+src_path = '/media/msd'
+export_path = '/media/cs/test'
+dest_path = '/media/scheduler'
+tmp_path = './tmp'
+backup_path = './backup'
+```
+
+4. update core_config.py
+
+```py
+activate_core_name = 'resnet50'
+
+CORE_ARGS = {
+    'resnet50': {
+        'MODEL_PATH': './data/merge-03_001_cc.pth', # set to your model path
+        'DEVICE_NAME': 'cuda:0',
+        'MODEL_TYPE': 'ori_resnet50',
+        'NUM_CLASSES': 2,
+        'PREPROCESS': 'autolevel',
+        'BATCH_SIZE': 8
+    }
+}
+```
+
+5. start pipeline  
 
 ```sh
 conda activate chromo-scheduler
