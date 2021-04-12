@@ -19,7 +19,7 @@ sudo chown voyager.voyager /media/scheduler
 mkdir ./tmp
 ```
 
-3. update config.py
+3. update consts.py
 
 ```py
 DEBUG = True
