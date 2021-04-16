@@ -400,3 +400,15 @@ def updateCaseScoreSampleIds(db_name, case_name, sorted_sample_ids):
     finally:
         if conn:
             conn.close()
+
+def get_all_score(db_name, m_path):
+    try:
+        conn = sqlite3.connect(db_name, detect_types=sqlite3.PARSE_DECLTYPES, timeout=SQLITE3_CONNECTION_TIMEOUT)
+        cursor = conn.cursor()
+
+        cursor.execute('select case_name, sample_id from scores')
+        scores = cursor.fetchall()
+        file_list = []
+        for score in scores:
+            file_list.append(f'{score[0]}.{str(score[1]).zfill(3)}.{SRC_EXT}')
+        return file_list

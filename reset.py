@@ -17,7 +17,7 @@ def reset_case():
             cursor.execute(
                 f'update scores set score={-1}, status={LONG_STATUS["SCANNED"]} where case_name="{case_name}"')
             # 回滚cases表中status状态为SCANNING/1
-            cursor.execute(f'update cases set status={STATUS["SCANNING"]} where case_name="{case_name}"')
+            cursor.execute(f'update cases set status={STATUS["SCANNING"]} where name="{case_name}"')
             conn.commit()
             print('Info: Reset Success')
         else:
