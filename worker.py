@@ -24,9 +24,8 @@ if __name__ == '__main__':
 
         try:
             # list
-            last_l_mmi, last_g_mmi = scan_list(
-                src_path, SRC_EXT,
-                last_l_mmi, last_g_mmi
+            scan_list(
+                src_path, SRC_EXT
             )
 
             # schedule
